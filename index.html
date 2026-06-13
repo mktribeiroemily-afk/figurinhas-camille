@@ -1,1 +1,829 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Álbum da Camille 🇧🇷</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap');
 
+  :root {
+    --verde: #009c3b;
+    --amarelo: #ffdf00;
+    --azul: #002776;
+    --azul-claro: #3a6fd8;
+    --branco: #ffffff;
+    --cinza-bg: #f0f4ff;
+    --cinza-card: #ffffff;
+    --texto: #1a1a2e;
+    --tenho: #009c3b;
+    --falta: #e0e0e0;
+    --repetida: #ff9500;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--cinza-bg);
+    color: var(--texto);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, var(--azul) 0%, var(--azul-claro) 60%, var(--verde) 100%);
+    padding: 20px 16px 16px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -30px; left: -30px;
+    width: 120px; height: 120px;
+    background: rgba(255,223,0,0.15);
+    border-radius: 50%;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; right: -20px;
+    width: 160px; height: 160px;
+    background: rgba(0,156,59,0.2);
+    border-radius: 50%;
+  }
+  .header-inner { position: relative; z-index: 1; }
+  .header h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 26px;
+    color: var(--amarelo);
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+    line-height: 1.2;
+  }
+  .header h1 span { color: white; }
+  .header p {
+    color: rgba(255,255,255,0.85);
+    font-size: 13px;
+    margin-top: 4px;
+    font-weight: 600;
+  }
+
+  /* MASCOTE */
+  .mascote-bar {
+    background: var(--amarelo);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    border-bottom: 3px solid var(--verde);
+  }
+  .mascote-img {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: 3px solid var(--verde);
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+  .mascote-texto h2 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 15px;
+    color: var(--azul);
+  }
+  .mascote-texto p {
+    font-size: 12px;
+    color: var(--verde);
+    font-weight: 700;
+  }
+
+  /* STATS */
+  .stats-bar {
+    background: var(--azul);
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 8px;
+    gap: 4px;
+  }
+  .stat-item {
+    text-align: center;
+    flex: 1;
+  }
+  .stat-num {
+    font-family: 'Fredoka One', cursive;
+    font-size: 20px;
+    color: var(--amarelo);
+    display: block;
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 10px;
+    color: rgba(255,255,255,0.8);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* PROGRESS */
+  .progress-wrap {
+    background: var(--azul);
+    padding: 0 16px 12px;
+  }
+  .progress-bar-outer {
+    background: rgba(255,255,255,0.2);
+    border-radius: 20px;
+    height: 10px;
+    overflow: hidden;
+  }
+  .progress-bar-inner {
+    height: 100%;
+    background: linear-gradient(90deg, var(--amarelo), var(--verde));
+    border-radius: 20px;
+    transition: width 0.4s ease;
+  }
+  .progress-label {
+    text-align: right;
+    color: rgba(255,255,255,0.7);
+    font-size: 11px;
+    margin-top: 4px;
+    font-weight: 700;
+  }
+
+  /* LEGENDA */
+  .legenda {
+    display: flex;
+    gap: 12px;
+    padding: 10px 16px;
+    background: white;
+    border-bottom: 1px solid #e8ecf0;
+    flex-wrap: wrap;
+  }
+  .leg-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .leg-dot {
+    width: 14px; height: 14px;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+
+  /* FILTROS */
+  .filtros {
+    display: flex;
+    gap: 6px;
+    padding: 10px 16px;
+    background: white;
+    border-bottom: 1px solid #e8ecf0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .filtros::-webkit-scrollbar { display: none; }
+  .filtro-btn {
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 2px solid var(--azul);
+    background: transparent;
+    color: var(--azul);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s;
+  }
+  .filtro-btn.active, .filtro-btn:hover {
+    background: var(--azul);
+    color: white;
+  }
+
+  /* CONTENT */
+  .content { padding: 12px 16px 80px; }
+
+  /* GRUPO */
+  .grupo {
+    margin-bottom: 16px;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  .grupo-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: var(--azul);
+    cursor: pointer;
+    user-select: none;
+  }
+  .grupo-letra {
+    font-family: 'Fredoka One', cursive;
+    font-size: 22px;
+    color: var(--amarelo);
+    width: 28px;
+    flex-shrink: 0;
+  }
+  .grupo-nome {
+    font-weight: 800;
+    color: white;
+    font-size: 13px;
+    flex: 1;
+  }
+  .grupo-progress-mini {
+    font-size: 11px;
+    color: rgba(255,255,255,0.8);
+    font-weight: 700;
+  }
+  .grupo-chevron {
+    color: rgba(255,255,255,0.6);
+    font-size: 14px;
+    transition: transform 0.2s;
+  }
+  .grupo.collapsed .grupo-chevron { transform: rotate(-90deg); }
+  .grupo.collapsed .grupo-body { display: none; }
+
+  .grupo-body {
+    background: white;
+  }
+
+  /* SELEÇÃO */
+  .selecao {
+    border-bottom: 1px solid #f0f0f0;
+    padding: 12px 14px;
+  }
+  .selecao:last-child { border-bottom: none; }
+  .selecao-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .bandeira { font-size: 22px; line-height: 1; }
+  .selecao-nome {
+    font-weight: 800;
+    font-size: 14px;
+    flex: 1;
+    color: var(--texto);
+  }
+  .selecao-codigo {
+    font-size: 10px;
+    color: #888;
+    font-weight: 700;
+    background: #f0f0f0;
+    padding: 2px 6px;
+    border-radius: 6px;
+  }
+  .selecao-mini-stats {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--verde);
+  }
+
+  /* GRID DE FIGURINHAS */
+  .figurinhas-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+  .fig-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    border: none;
+    font-family: 'Nunito', sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.12s;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .fig-btn.falta {
+    background: var(--falta);
+    color: #aaa;
+  }
+  .fig-btn.tenho {
+    background: var(--tenho);
+    color: white;
+  }
+  .fig-btn.repetida {
+    background: var(--repetida);
+    color: white;
+  }
+  .fig-btn:active { transform: scale(0.9); }
+  .rep-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: var(--azul);
+    color: white;
+    border-radius: 50%;
+    width: 14px;
+    height: 14px;
+    font-size: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+  }
+
+  /* BOTTOM TABS */
+  .bottom-tabs {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: white;
+    border-top: 2px solid #e8ecf0;
+    display: flex;
+    z-index: 100;
+  }
+  .tab-btn {
+    flex: 1;
+    padding: 10px 4px 8px;
+    border: none;
+    background: transparent;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 10px;
+    color: #aaa;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+  .tab-btn.active { color: var(--azul); }
+  .tab-icon { font-size: 20px; line-height: 1; }
+
+  /* VIEWS */
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* FALTANTES VIEW */
+  .faltantes-list {
+    padding: 12px 16px 80px;
+  }
+  .faltante-item {
+    background: white;
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .faltante-bandeira { font-size: 24px; }
+  .faltante-info { flex: 1; }
+  .faltante-nome {
+    font-weight: 800;
+    font-size: 14px;
+    color: var(--texto);
+  }
+  .faltante-numeros {
+    font-size: 12px;
+    color: #888;
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+  .faltante-count {
+    font-family: 'Fredoka One', cursive;
+    font-size: 20px;
+    color: var(--azul-claro);
+  }
+
+  /* REPETIDAS VIEW */
+  .repetidas-list {
+    padding: 12px 16px 80px;
+  }
+  .rep-item {
+    background: white;
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .rep-bandeira { font-size: 24px; }
+  .rep-info { flex: 1; }
+  .rep-nome { font-weight: 800; font-size: 14px; }
+  .rep-numeros { font-size: 12px; color: #888; margin-top: 3px; }
+  .rep-total {
+    font-family: 'Fredoka One', cursive;
+    font-size: 22px;
+    color: var(--repetida);
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: #bbb;
+  }
+  .empty-state .emoji { font-size: 48px; display: block; margin-bottom: 10px; }
+  .empty-state p { font-weight: 700; font-size: 14px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <h1>🏆 Álbum da <span>Camille</span> 🏆</h1>
+    <p>Copa do Mundo 2026 · Figurinhas</p>
+  </div>
+</div>
+
+<div class="mascote-bar">
+  <img class="mascote-img" src="https://drive.google.com/uc?export=view&id=12odX8jVJqPtasD0G4LLHexzc9H4jshN_" alt="Camille" onerror="this.style.display='none'">
+  <div class="mascote-texto">
+    <h2>Vai Brasil! 🇧🇷⚽</h2>
+    <p>Toque numa figurinha pra marcar!</p>
+  </div>
+</div>
+
+<div class="stats-bar">
+  <div class="stat-item">
+    <span class="stat-num" id="stat-tenho">0</span>
+    <span class="stat-label">Tenho</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num" id="stat-falta">0</span>
+    <span class="stat-label">Faltam</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num" id="stat-repetidas">0</span>
+    <span class="stat-label">Repetidas</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num" id="stat-pct">0%</span>
+    <span class="stat-label">Completo</span>
+  </div>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-bar-outer">
+    <div class="progress-bar-inner" id="progress-bar" style="width:0%"></div>
+  </div>
+  <div class="progress-label" id="progress-label">0 de 0 figurinhas</div>
+</div>
+
+<!-- VIEW ÁLBUM -->
+<div id="view-album" class="view active">
+  <div class="legenda">
+    <div class="leg-item"><div class="leg-dot" style="background:#009c3b"></div> Tenho</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#e0e0e0"></div> Falta</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#ff9500"></div> Repetida</div>
+    <div class="leg-item" style="color:#666;font-size:11px">1 toque = tenho · 2 toques = repetida · 3 = falta</div>
+  </div>
+  <div class="content" id="album-content"></div>
+</div>
+
+<!-- VIEW FALTANTES -->
+<div id="view-faltantes" class="view">
+  <div class="faltantes-list" id="faltantes-content"></div>
+</div>
+
+<!-- VIEW REPETIDAS -->
+<div id="view-repetidas" class="view">
+  <div class="repetidas-list" id="repetidas-content"></div>
+</div>
+
+<div class="bottom-tabs">
+  <button class="tab-btn active" onclick="switchTab('album', this)">
+    <span class="tab-icon">📖</span>Álbum
+  </button>
+  <button class="tab-btn" onclick="switchTab('faltantes', this)">
+    <span class="tab-icon">🔍</span>Faltam
+  </button>
+  <button class="tab-btn" onclick="switchTab('repetidas', this)">
+    <span class="tab-icon">🔄</span>Repetidas
+  </button>
+</div>
+
+<script>
+// =====================
+// DADOS
+// =====================
+const GRUPOS = [
+  {
+    letra: "⭐", nome: "Página Inicial & Especiais",
+    selecoes: [
+      { nome: "FIFA World Cup History", codigo: "FWC", bandeira: "🏆", total: 19,
+        iniciais: {falta:[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]} },
+      { nome: "Figurinhas Coca-Cola", codigo: "CC", bandeira: "🥤", total: 14,
+        iniciais: {falta:[1,2,3,4,5,6,7,8,9,10,11,12,13,14]} },
+    ]
+  },
+  {
+    letra: "A", nome: "Grupo A",
+    selecoes: [
+      { nome: "México", codigo: "MEX", bandeira: "🇲🇽", total: 20, iniciais: {falta:Array.from({length:20},(_,i)=>i+1)} },
+      { nome: "África do Sul", codigo: "RSA", bandeira: "🇿🇦", total: 20, iniciais: {falta:Array.from({length:20},(_,i)=>i+1)} },
+      { nome: "Coreia do Sul", codigo: "KOR", bandeira: "🇰🇷", total: 20, iniciais: {falta:Array.from({length:20},(_,i)=>i+1)} },
+      { nome: "Rep. Tcheca", codigo: "CZE", bandeira: "🇨🇿", total: 20, iniciais: {tenho:[1,2], falta:[1,2,3,4,5,6,7,8,10,11,12,13,14,15,16,18,19,20]} },
+    ]
+  },
+  {
+    letra: "B", nome: "Grupo B",
+    selecoes: [
+      { nome: "Canadá", codigo: "CAN", bandeira: "🇨🇦", total: 20, iniciais: {falta:Array.from({length:20},(_,i)=>i+1)} },
+      { nome: "Bósnia", codigo: "BIH", bandeira: "🇧🇦", total: 20, iniciais: {tenho:[1], falta:[1,2,3,4,5,6,7,8,9,10,11,12,13,15,16,17,18,19,20]} },
+      { nome: "Catar", codigo: "QAT", bandeira: "🇶🇦", total: 20, iniciais: {falta:Array.from({length:20},(_,i)=>i+1)} },
+      { nome: "Suíça", codigo: "SUI", bandeira: "🇨🇭", total: 20, iniciais: {tenho:[1], falta:[1,2,3,4,5,6,7,8,9,10,11,12,14,15,16,17,18,19,20]} },
+    ]
+  },
+  {
+    letra: "C", nome: "Grupo C",
+    selecoes: [
+      { nome: "Brasil", codigo: "BRA", bandeira: "🇧🇷", total: 20, iniciais: {tenho:[1], falta:[1,2,3,4,5,6,7,8,10,11,12,13,14,15,16,17,18,19,20]} },
+      { nome: "Marrocos", codigo: "MAR", bandeira: "🇲🇦", total: 20, iniciais: {tenho:[1], falta:[1,2,3,4,5,6,7,8,10,11,12,13,14,15,16,17,18,19,20]} },
+      { nome: "Haiti", codigo: "HAI", bandeira: "🇭🇹", total: 20, iniciais: {falta:Array.from({length:20},(_,i)=>i+1)} },
+      { nome: "Escócia", codigo: "SCO", bandeira: "🏴󠁧󠁢󠁳󠁣󠁴󠁿", total: 20, iniciais: {tenho:[1], falta:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,18,19,20]} },
+    ]
+  },
+  {
+    letra: "D", nome: "Grupo D",
+    selecoes: [
+      { nome: "Estados Unidos", codigo: "USA", bandeira: "🇺🇸", total: 20, iniciais: {falta:Array.from({length:20},(_,i)=>i+1)} },
+      { nome: "Paraguai", codigo: "PAR", bandeira: "🇵🇾", total: 20, iniciais: {falta:Array.from({length:20},(_,i)=>i+1)} },
+      { nome: "Austrália", codigo: "AUS", bandeira: "🇦🇺", total: 20, iniciais: {tenho:[2], falta:[1,2,3,4,5,6,7,8,9,10,12,13,14,15,17,18,19,20]} },
+      { nome: "Turquia", codigo: "TUR", bandeira: "🇹🇷", total: 20, iniciais: {falta:Array.from({length:20},(_,i)=>i+1)} },
+    ]
+  },
+  {
+    letra: "E", nome: "Grupo E",
+    selecoes: [
+      { nome: "Alemanha", codigo: "GER", bandeira: "🇩🇪", total: 20, iniciais: {falta:Array.from({length:20},(_,i)=>i+1)} },
+      { nome: "Curaçao", codigo: "CUW", bandeira: "🇨🇼", total: 20, iniciais: {falta:Array.from({length:20},(_,i)=>i+1)} },
+      { nome: "Costa do Marfim", codigo: "CIV", bandeira: "🇨🇮", total: 20, iniciais: {falta:Array.from({length:20},(_,i)=>i+1)} },
+      { nome: "Equador", codigo: "ECU", bandeira: "🇪🇨", total: 20, iniciais: {falta:Array.from({length:20},(_,i)=>i+1)} },
+    ]
+  },
+  {
+    letra: "F", nome: "Grupo F",
+    selecoes: [
+      { nome: "Holanda", codigo: "NED", bandeira: "🇳🇱", total: 20, iniciais: {falta:Array.from({length:20},(_,i)=>i+1)} },
+      { nome: "Japão", codigo: "JPN", bandeira: "🇯🇵", total: 20, iniciais: {tenho:[1], falta:[1,2,3,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]} },
+      { nome: "Suécia", codigo: "SWE", bandeira: "🇸🇪", total: 20, iniciais: {tenho:[1], falta:[1,2,3,4,5,7,8,9,10,11,12,13,14,15,16,17,18,19,20]} },
+      { nome: "Tunísia", codigo: "TUN", bandeira: "🇹🇳", total: 20, iniciais: {falta:Array.from({length:20},(_,i)=>i+1)} },
+    ]
+  },
+  {
+    letra: "G", nome: "Grupo G",
+    selecoes: [
+      { nome: "Bélgica", codigo: "BEL", bandeira: "🇧🇪", total: 20, iniciais: {falta:Array.from({length:20},(_,i)=>i+1)} },
+      { nome: "Egito", codigo: "EGY", bandeira: "🇪🇬", total: 20, iniciais: {falta:Array.from({length:20},(_,i)=>i+1)} },
+      { nome: "Irã", codigo: "IRN", bandeira: "🇮🇷", total: 20, iniciais: {falta:Array.from({length:20},(_,i)=>i+1)} },
+      { nome: "Nova Zelândia", codigo: "NZL", bandeira: "🇳🇿", total: 20, iniciais: {falta:Array.from({length:20},(_,i)=>i+1)} },
+    ]
+  },
+  {
+    letra: "H", nome: "Grupo H",
+    selecoes: [
+      { nome: "Espanha", codigo: "ESP", bandeira: "🇪🇸", total: 20, iniciais: {tenho:[1], falta:[1,2,3,4,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]} },
+      { nome: "Cabo Verde", codigo: "CPV", bandeira: "🇨🇻", total: 20, iniciais: {falta:Array.from({length:20},(_,i)=>i+1)} },
+      { nome: "Arábia Saudita", codigo: "KSA", bandeira: "🇸🇦", total: 20, iniciais: {tenho:[1], falta:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]} },
+      { nome: "Uruguai", codigo: "URU", bandeira: "🇺🇾", total: 20, iniciais: {falta:Array.from({length:20},(_,i)=>i+1)} },
+    ]
+  },
+  {
+    letra: "I", nome: "Grupo I",
+    selecoes: [
+      { nome: "França", codigo: "FRA", bandeira: "🇫🇷", total: 20, iniciais: {falta:Array.from({length:20},(_,i)=>i+1)} },
+      { nome: "Senegal", codigo: "SEN", bandeira: "🇸🇳", total: 20, iniciais: {falta:Array.from({length:20},(_,i)=>i+1)} },
+      { nome: "Iraque", codigo: "IRQ", bandeira: "🇮🇶", total: 20, iniciais: {tenho:[1], falta:[1,2,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]} },
+      { nome: "Noruega", codigo: "NOR", bandeira: "🇳🇴", total: 20, iniciais: {tenho:[1], falta:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,17,18,19,20]} },
+    ]
+  },
+  {
+    letra: "J", nome: "Grupo J",
+    selecoes: [
+      { nome: "Argentina", codigo: "ARG", bandeira: "🇦🇷", total: 20, iniciais: {falta:Array.from({length:20},(_,i)=>i+1)} },
+      { nome: "Argélia", codigo: "ALG", bandeira: "🇩🇿", total: 20, iniciais: {falta:Array.from({length:20},(_,i)=>i+1)} },
+      { nome: "Áustria", codigo: "AUT", bandeira: "🇦🇹", total: 20, iniciais: {falta:Array.from({length:20},(_,i)=>i+1)} },
+      { nome: "Jordânia", codigo: "JOR", bandeira: "🇯🇴", total: 20, iniciais: {tenho:[1], falta:[2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]} },
+    ]
+  },
+  {
+    letra: "K", nome: "Grupo K",
+    selecoes: [
+      { nome: "Portugal", codigo: "POR", bandeira: "🇵🇹", total: 20, iniciais: {falta:Array.from({length:20},(_,i)=>i+1)} },
+      { nome: "Congo", codigo: "COD", bandeira: "🇨🇩", total: 20, iniciais: {falta:Array.from({length:20},(_,i)=>i+1)} },
+      { nome: "Uzbequistão", codigo: "UZB", bandeira: "🇺🇿", total: 20, iniciais: {falta:Array.from({length:20},(_,i)=>i+1)} },
+      { nome: "Colômbia", codigo: "COL", bandeira: "🇨🇴", total: 20, iniciais: {falta:Array.from({length:20},(_,i)=>i+1)} },
+    ]
+  },
+  {
+    letra: "L", nome: "Grupo L",
+    selecoes: [
+      { nome: "Inglaterra", codigo: "ENG", bandeira: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", total: 20, iniciais: {falta:Array.from({length:20},(_,i)=>i+1)} },
+      { nome: "Croácia", codigo: "CRO", bandeira: "🇭🇷", total: 20, iniciais: {tenho:[1], falta:[1,2,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]} },
+      { nome: "Gana", codigo: "GHA", bandeira: "🇬🇭", total: 20, iniciais: {falta:Array.from({length:20},(_,i)=>i+1)} },
+      { nome: "Panamá", codigo: "PAN", bandeira: "🇵🇦", total: 20, iniciais: {falta:Array.from({length:20},(_,i)=>i+1)} },
+    ]
+  },
+];
+
+// Estado: { "BRA-1": 0=falta, 1=tenho, 2=repetida }
+let estado = {};
+
+function chave(cod, num) { return `${cod}-${num}`; }
+
+function initEstado() {
+  const salvo = localStorage.getItem('camille-figurinhas-v2');
+  if (salvo) {
+    estado = JSON.parse(salvo);
+    return;
+  }
+  // Carrega dados iniciais da planilha
+  GRUPOS.forEach(g => {
+    g.selecoes.forEach(s => {
+      for (let i = 1; i <= s.total; i++) {
+        estado[chave(s.codigo, i)] = 0; // começa tudo faltando
+      }
+      // Marca as que já tem (da planilha)
+      if (s.iniciais && s.iniciais.tenho) {
+        s.iniciais.tenho.forEach(n => { estado[chave(s.codigo, n)] = 1; });
+      }
+    });
+  });
+  salvar();
+}
+
+function salvar() {
+  try { localStorage.setItem('camille-figurinhas-v2', JSON.stringify(estado)); } catch(e) {}
+}
+
+function ciclarFig(cod, num) {
+  const k = chave(cod, num);
+  const atual = estado[k] || 0;
+  estado[k] = (atual + 1) % 3;
+  salvar();
+  renderTudo();
+}
+
+function calcStats() {
+  let tenho = 0, falta = 0, repetidas = 0, total = 0;
+  for (const k in estado) {
+    total++;
+    if (estado[k] === 1) tenho++;
+    else if (estado[k] === 0) falta++;
+    else if (estado[k] === 2) repetidas++;
+  }
+  return { tenho, falta, repetidas, total };
+}
+
+function renderStats() {
+  const s = calcStats();
+  document.getElementById('stat-tenho').textContent = s.tenho;
+  document.getElementById('stat-falta').textContent = s.falta;
+  document.getElementById('stat-repetidas').textContent = s.repetidas;
+  const pct = s.total > 0 ? Math.round((s.tenho / s.total) * 100) : 0;
+  document.getElementById('stat-pct').textContent = pct + '%';
+  document.getElementById('progress-bar').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = `${s.tenho} de ${s.total} figurinhas`;
+}
+
+function renderAlbum() {
+  const container = document.getElementById('album-content');
+  container.innerHTML = '';
+  GRUPOS.forEach((g, gi) => {
+    const totalGrupo = g.selecoes.reduce((a, s) => a + s.total, 0);
+    const tenhoGrupo = g.selecoes.reduce((a, s) => {
+      let c = 0;
+      for (let i = 1; i <= s.total; i++) if ((estado[chave(s.codigo,i)]||0) >= 1) c++;
+      return a + c;
+    }, 0);
+
+    const grupoDiv = document.createElement('div');
+    grupoDiv.className = 'grupo';
+    grupoDiv.dataset.grupo = gi;
+
+    let seloesHTML = '';
+    g.selecoes.forEach(s => {
+      let figsHTML = '';
+      const numeros = s.codigo === 'FWC' 
+        ? Array.from({length:s.total},(_,i)=>i) 
+        : Array.from({length:s.total},(_,i)=>i+1);
+      
+      let tenhoSel = 0, repSel = 0;
+      numeros.forEach(n => {
+        const k = chave(s.codigo, n);
+        const st = estado[k] || 0;
+        if (st === 1) tenhoSel++;
+        if (st === 2) { tenhoSel++; repSel++; }
+        const cls = st === 0 ? 'falta' : st === 1 ? 'tenho' : 'repetida';
+        const badge = st === 2 ? '<span class="rep-badge">+1</span>' : '';
+        figsHTML += `<button class="fig-btn ${cls}" onclick="ciclarFig('${s.codigo}',${n})" title="${s.codigo} ${n}">${n}${badge}</button>`;
+      });
+
+      seloesHTML += `
+        <div class="selecao">
+          <div class="selecao-header">
+            <span class="bandeira">${s.bandeira}</span>
+            <span class="selecao-nome">${s.nome}</span>
+            <span class="selecao-codigo">${s.codigo}</span>
+            <span class="selecao-mini-stats">${tenhoSel}/${s.total}</span>
+          </div>
+          <div class="figurinhas-grid">${figsHTML}</div>
+        </div>`;
+    });
+
+    grupoDiv.innerHTML = `
+      <div class="grupo-header" onclick="toggleGrupo(${gi})">
+        <span class="grupo-letra">${g.letra}</span>
+        <span class="grupo-nome">${g.nome}</span>
+        <span class="grupo-progress-mini">${tenhoGrupo}/${totalGrupo}</span>
+        <span class="grupo-chevron">▼</span>
+      </div>
+      <div class="grupo-body">${seloesHTML}</div>`;
+    
+    container.appendChild(grupoDiv);
+  });
+}
+
+function renderFaltantes() {
+  const cont = document.getElementById('faltantes-content');
+  let html = '';
+  let algum = false;
+  GRUPOS.forEach(g => {
+    g.selecoes.forEach(s => {
+      const numeros = s.codigo === 'FWC' 
+        ? Array.from({length:s.total},(_,i)=>i) 
+        : Array.from({length:s.total},(_,i)=>i+1);
+      const faltam = numeros.filter(n => (estado[chave(s.codigo,n)]||0) === 0);
+      if (faltam.length > 0) {
+        algum = true;
+        html += `<div class="faltante-item">
+          <span class="faltante-bandeira">${s.bandeira}</span>
+          <div class="faltante-info">
+            <div class="faltante-nome">${s.nome} <span style="color:#aaa;font-size:12px">${s.codigo}</span></div>
+            <div class="faltante-numeros">${faltam.join(', ')}</div>
+          </div>
+          <span class="faltante-count">${faltam.length}</span>
+        </div>`;
+      }
+    });
+  });
+  if (!algum) html = `<div class="empty-state"><span class="emoji">🏆</span><p>Álbum completo! Parabéns, Camille!</p></div>`;
+  cont.innerHTML = html;
+}
+
+function renderRepetidas() {
+  const cont = document.getElementById('repetidas-content');
+  let html = '';
+  let algum = false;
+  GRUPOS.forEach(g => {
+    g.selecoes.forEach(s => {
+      const numeros = s.codigo === 'FWC' 
+        ? Array.from({length:s.total},(_,i)=>i) 
+        : Array.from({length:s.total},(_,i)=>i+1);
+      const reps = numeros.filter(n => (estado[chave(s.codigo,n)]||0) === 2);
+      if (reps.length > 0) {
+        algum = true;
+        html += `<div class="rep-item">
+          <span class="rep-bandeira">${s.bandeira}</span>
+          <div class="rep-info">
+            <div class="rep-nome">${s.nome}</div>
+            <div class="rep-numeros">${s.codigo}: ${reps.join(', ')}</div>
+          </div>
+          <span class="rep-total">${reps.length}x</span>
+        </div>`;
+      }
+    });
+  });
+  if (!algum) html = `<div class="empty-state"><span class="emoji">🔄</span><p>Nenhuma repetida por enquanto!</p></div>`;
+  cont.innerHTML = html;
+}
+
+function renderTudo() {
+  renderStats();
+  renderAlbum();
+  renderFaltantes();
+  renderRepetidas();
+}
+
+function toggleGrupo(idx) {
+  const el = document.querySelector(`[data-grupo="${idx}"]`);
+  el.classList.toggle('collapsed');
+}
+
+function switchTab(nome, btn) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('view-' + nome).classList.add('active');
+  btn.classList.add('active');
+}
+
+// INIT
+initEstado();
+renderTudo();
+</script>
+</body>
+</html>
